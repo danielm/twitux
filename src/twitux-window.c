@@ -65,8 +65,8 @@ twitux_window_new (TwituxApp *application)
 
   window = g_object_new (TWITUX_TYPE_WINDOW,
                          "application",
-		                 GTK_APPLICATION (application),
-		                 NULL);
+                         GTK_APPLICATION (application),
+                         NULL);
 
   return GTK_WIDGET (window);
 }

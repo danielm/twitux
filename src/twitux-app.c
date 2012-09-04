@@ -39,15 +39,15 @@ static void twitux_app_class_init    (TwituxAppClass *klass);
 static void twitux_app_init_app_menu (GApplication *application);
 
 static void action_about (GSimpleAction *action,
-	                      GVariant      *parameter,
-	                      gpointer       user_data);
+                          GVariant      *parameter,
+                          gpointer       user_data);
 static void action_help  (GSimpleAction *action,
-	                      GVariant      *parameter,
-	                      gpointer       user_data);
+                          GVariant      *parameter,
+                          gpointer       user_data);
 static void action_quit  (GSimpleAction *action,
-	                      GVariant      *parameter,
-	                      gpointer       user_data);
-	         
+                          GVariant      *parameter,
+                          gpointer       user_data);
+           
 
 G_DEFINE_TYPE (TwituxApp, twitux_app, GTK_TYPE_APPLICATION);
 
@@ -143,8 +143,8 @@ twitux_app_init_app_menu (GApplication *application)
 
 static void
 action_about (GSimpleAction *action,
-	          GVariant      *parameter,
-	          gpointer       user_data)
+              GVariant      *parameter,
+              gpointer       user_data)
 {
   TwituxApp *application = TWITUX_APP (user_data);
 
@@ -169,8 +169,8 @@ action_about (GSimpleAction *action,
 
 static void
 action_help (GSimpleAction *action,
-	         GVariant      *parameter,
-	         gpointer       user_data)
+             GVariant      *parameter,
+             gpointer       user_data)
 {
   GApplication *application = G_APPLICATION (user_data);
 
