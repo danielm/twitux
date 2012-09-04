@@ -1,0 +1,22 @@
+AM_CPPFLAGS =									\
+	-DPREFIX=\""$(prefix)"\"					\
+	-DLIBDIR=\""$(libdir)"\"					\
+	-DDATADIR=\""$(datadir)"\"					\
+	-DTWITUX_LOCALEDIR=\""$(datadir)/locale"\"	\
+	-DG_DISABLE_DEPRECATED						\
+	-DGTK_DISABLE_DEPRECATED					\
+	-DG_LOG_DOMAIN=\"TWITUX\"					\
+	-I$(top_srcdir)								\
+	-I$(top_builddir)							\
+	$(ENCHANT_CFLAGS) 							\
+	$(TWITUX_CFLAGS)
+
+twitux_PROGRAMS = twitux
+
+twitux_SOURCES =								\
+	main.c										\
+	twitux-app.c		twitux-app.h			\
+	twitux-window.c		twitux-window.h
+
+twitux_LDADD =									\
+	$(TWITUX_LIBS)

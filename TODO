@@ -1,0 +1,1 @@
+GCONF? How are we gonna handle Accounts? Maybe use libsecret to store tokens/etc.. and acounts with gconf?	

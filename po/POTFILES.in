@@ -1,0 +1,6 @@
+# List of source files containing translatable strings.
+# Please keep this list in alphabetic order.
+[encoding: UTF-8]
+data/twitux.desktop.in.in
+src/twitux-app.c
+

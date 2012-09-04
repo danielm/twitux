@@ -1,0 +1,10 @@
+[Desktop Entry]
+_Name=Twitux
+_Comment=Microblogging client
+Exec=twitux
+Terminal=false
+Type=Application
+StartupNotify=true
+Icon=phone
+OnlyShowIn=GNOME;
+Categories=Network;GTK;
