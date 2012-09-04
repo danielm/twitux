@@ -24,7 +24,7 @@
 
 G_BEGIN_DECLS
 
-#define TWITUX_TYPE_APP                (twitux_application_get_type ())
+#define TWITUX_TYPE_APP                (twitux_app_get_type ())
 #define TWITUX_APP(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), TWITUX_TYPE_APP, TwituxApp))
 #define TWITUX_APP_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), TWITUX_TYPE_APP, TwituxAppClass))
 #define TWITUX_IS_APP(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TWITUX_TYPE_APP))
@@ -47,9 +47,9 @@ struct _TwituxApp
   TwituxAppPrivate *priv;
 };
 
-GType      twitux_application_get_type (void) G_GNUC_CONST;
-TwituxApp* twitux_application_new      (void);
+GType      twitux_app_get_type (void) G_GNUC_CONST;
+TwituxApp* twitux_app_new      (void);
 
 G_END_DECLS
 
-#endif /* _TWITUX_APPLICATION_H_ */
+#endif /* _TWITUX_APP_H_ */

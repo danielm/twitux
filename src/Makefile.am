@@ -2,6 +2,7 @@ AM_CPPFLAGS =									\
 	-DPREFIX=\""$(prefix)"\"					\
 	-DLIBDIR=\""$(libdir)"\"					\
 	-DDATADIR=\""$(datadir)"\"					\
+	-DTWITUX_DATADIR=\""$(pkgdatadir)"\"					\
 	-DTWITUX_LOCALEDIR=\""$(datadir)/locale"\"	\
 	-DG_DISABLE_DEPRECATED						\
 	-DGTK_DISABLE_DEPRECATED					\
@@ -11,7 +12,7 @@ AM_CPPFLAGS =									\
 	$(ENCHANT_CFLAGS) 							\
 	$(TWITUX_CFLAGS)
 
-twitux_PROGRAMS = twitux
+bin_PROGRAMS = twitux
 
 twitux_SOURCES =								\
 	main.c										\

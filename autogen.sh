@@ -8,7 +8,7 @@ PKG_NAME="twitux"
 REQUIRED_AUTOMAKE_VERSION=1.11
 REQUIRED_AUTOCONF_VERSION=2.64
 
-(test -f $srcdir/configure.in) || {
+(test -f $srcdir/configure.ac) || {
     echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"
     echo " top-level gnome directory"
     exit 1

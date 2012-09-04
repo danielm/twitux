@@ -33,10 +33,21 @@ struct _TwituxAppPrivate
 static void twitux_app_startup       (GApplication *app);
 static void twitux_app_activate      (GApplication *application);
 static void twitux_app_init          (TwituxApp *self);
-static void twitux_app_finalize      (GObject *object),
+static void twitux_app_finalize      (GObject *object);
 static void twitux_app_class_init    (TwituxAppClass *klass);
 
 static void twitux_app_init_app_menu (GApplication *application);
+
+static void action_about (GSimpleAction *action,
+	                      GVariant      *parameter,
+	                      gpointer       user_data);
+static void action_help  (GSimpleAction *action,
+	                      GVariant      *parameter,
+	                      gpointer       user_data);
+static void action_quit  (GSimpleAction *action,
+	                      GVariant      *parameter,
+	                      gpointer       user_data);
+	         
 
 G_DEFINE_TYPE (TwituxApp, twitux_app, GTK_TYPE_APPLICATION);
 
@@ -54,7 +65,9 @@ twitux_app_activate (GApplication *application)
   priv = TWITUX_APP (application)->priv;
 
   if (priv->main_window != NULL)
+  {
     gtk_window_present (GTK_WINDOW (priv->main_window));
+  }
   else
   {
     priv->main_window = twitux_window_new (TWITUX_APP (application));
@@ -114,7 +127,7 @@ twitux_app_init_app_menu (GApplication *application)
                                    application);
 
   builder = gtk_builder_new ();
-  gtk_builder_add_from_file (builder, DATADIR "/twitux-app-menu.xml", &error);
+  gtk_builder_add_from_file (builder, TWITUX_DATADIR "/twitux-app-menu.xml", &error);
 
   if (error == NULL) {
     gtk_application_set_app_menu (GTK_APPLICATION (application),
@@ -133,7 +146,7 @@ action_about (GSimpleAction *action,
 	          GVariant      *parameter,
 	          gpointer       user_data)
 {
-  GtkApplication *application = GTK_APPLICATION (user_data);
+  TwituxApp *application = TWITUX_APP (user_data);
 
   const gchar *authors[] = {
     "Daniel Morales <daniminas@gmail.com>",
@@ -143,7 +156,7 @@ action_about (GSimpleAction *action,
   const gchar *translators = _("translator-credits");
   const gchar *copyright = "2012 Daniel Morales";
 
-  gtk_show_about_dialog (GTK_WINDOW (app->priv->window),
+  gtk_show_about_dialog (GTK_WINDOW (application->priv->main_window),
                          "program-name", "Twitux",
                          "comments", _("Microblogging client for Gnome"),
                          "version", VERSION,

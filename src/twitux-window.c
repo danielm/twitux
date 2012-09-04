@@ -21,7 +21,7 @@
 
 struct _TwituxWindowPrivate
 {
-
+  /* Widgets here */
 };
 
 static void twitux_window_constructed (GObject *object);

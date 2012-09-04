@@ -30,7 +30,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/twitux.c])
 
-AM_INIT_AUTOMAKE([1.11 tar-ustar no-dist-gzip dist-xz)
+AM_INIT_AUTOMAKE([1.11 tar-ustar no-dist-gzip dist-xz])
 AM_SILENT_RULES([yes])
 AM_MAINTAINER_MODE([enable])
 
@@ -67,9 +67,9 @@ PKG_CHECK_MODULES(TWITUX,
   gtk+-3.0 >= $GTK_REQUIRED
   rest-0.7 >= $REST_REQUIRED
   libnotify >= $LIBNOTIFY_REQUIRED
-  libsecret-1 >= $LIBSECRET_REQUIRED
   libcanberra-gtk3 >= $LIBCANBERRA_GTK_REQUIRED
 ])
+#libsecret-1 >= $LIBSECRET_REQUIRED
 AC_SUBST(TWITUX_CFLAGS)
 AC_SUBST(TWITUX_LIBS)
 
