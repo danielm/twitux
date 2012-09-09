@@ -12,10 +12,12 @@ less features then it had back in 0.69 and use the project to get back
 into GTK+ development, using all the tools (better ones) we have now.
 After that and probably looking forward to 1.0 start adding features.
 
-This to Find out on my way to 1.0
+Things to Find out on my way to 1.0
 -------------------------------------
 - Use of librest or libsocialweb?. For now librest is my choice since
   libsocialweb seems buggy and Twitter support is broken on my distro.
 - Use of Clutter / Mx to build a fancy looking UI. Just maybe,
 - Gnome3 - Lots of things changed on Gnome since last release and how
 applications interact with it.
+- Twitux - Twitter's app name was took by someone :(. (We still have
+  the account tho: @twitux)
