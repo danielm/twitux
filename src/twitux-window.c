@@ -17,6 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#include "twitux-utils.h"
 #include "twitux-window.h"
 #include "twitux-viewer.h"
 #include "twitux-viewer-tile.h"
@@ -61,6 +62,8 @@ twitux_window_constructed (GObject *object)
 
   private = TWITUX_WINDOW (object)->priv;
   
+  gtk_application_window_set_show_menubar (GTK_APPLICATION_WINDOW (object), TRUE);
+  
   gtk_window_set_default_size (GTK_WINDOW (object), 380, 455);
   g_signal_connect (object, "delete-event",
     G_CALLBACK (gtk_widget_hide_on_delete), NULL);
@@ -79,20 +82,22 @@ twitux_window_constructed (GObject *object)
   /* Just testing data */
   for (i = 0; i <20; i++)
   {
+    gchar *anonnymous = twitux_utils_lookup_file ("twitux-anonymous.png");
+    
     tile = twitux_viewer_tile_new ();
 
     twitux_viewer_tile_set_title (TWITUX_VIEWER_TILE (tile),
-      "<b>Daniel Morales</b> <span color='#c0c0c0'>(10 minutes ago)</span>");
+      "<b>Twitux</b> <span color='#c0c0c0'>(10 minutes ago)</span>");
 
-    twitux_viewer_tile_set_image (TWITUX_VIEWER_TILE (tile),
-      TWITUX_DATADIR "/twitux-anonymous.png");
+    twitux_viewer_tile_set_image (TWITUX_VIEWER_TILE (tile), anonnymous);
 
     twitux_viewer_tile_set_content (TWITUX_VIEWER_TILE (tile),
-      "Yep, yep..... Twitux has a new release: 0.70, for the good old times. Learn more: <a href='#'>http://is.gd/nf7dn</a>");
+      " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ornare est eu lorem sollicitudin.. <a href='#'>http://tinyurl.com/twitux</a>");
 
-    gtk_box_pack_start(GTK_BOX (private->viewer), GTK_WIDGET (tile), FALSE, FALSE, 10);
+    gtk_box_pack_start(GTK_BOX (private->viewer), GTK_WIDGET (tile), FALSE, FALSE, 0);
 
     gtk_widget_show_all (tile);
+    g_free (anonnymous);
   }
 }
 

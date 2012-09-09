@@ -44,7 +44,7 @@ twitux_viewer_init(TwituxViewer *viewer)
                                              TwituxViewerPrivate);
 
   gtk_orientable_set_orientation (GTK_ORIENTABLE (viewer), GTK_ORIENTATION_VERTICAL);
-  gtk_box_set_spacing (GTK_BOX (viewer), 5);
+  gtk_box_set_spacing (GTK_BOX (viewer), 0);
 }
 
 GtkWidget*

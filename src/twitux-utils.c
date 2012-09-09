@@ -43,3 +43,9 @@ twitux_utils_show_about (GtkWidget *parent)
                          "translator-credits", translators,
                          NULL);
 }
+
+gchar *
+twitux_utils_lookup_file (const gchar *filename)
+{
+  return g_build_filename (TWITUX_DATADIR, filename, NULL);
+}

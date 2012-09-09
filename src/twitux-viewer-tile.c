@@ -28,10 +28,15 @@ struct _TwituxViewerTilePrivate
   GtkWidget *picture;
   GtkWidget *title;
   GtkWidget *content;
+  GtkWidget *alignment;
 };
 
 static void twitux_viewer_tile_class_init  (TwituxViewerTileClass *klass);
 static void twitux_viewer_tile_init        (TwituxViewerTile *tile);
+
+gboolean twitux_viewer_tile_on_draw_cb (GtkWidget    *widget,
+                                        cairo_t      *cr,
+                                        gpointer      user_data);
 
 G_DEFINE_TYPE(TwituxViewerTile, twitux_viewer_tile, GTK_TYPE_EVENT_BOX)
 
@@ -44,21 +49,21 @@ twitux_viewer_tile_class_init(TwituxViewerTileClass *klass)
 static void
 twitux_viewer_tile_init(TwituxViewerTile *tile)
 {
-  GtkWidget *alignment;
   GtkWidget *hbox, *vbox;
 
   tile->priv = G_TYPE_INSTANCE_GET_PRIVATE(tile,
                                            TWITUX_TYPE_VIEWER_TILE,
                                            TwituxViewerTilePrivate);
 
-  gtk_event_box_set_visible_window (GTK_EVENT_BOX (tile), TRUE);
+  gtk_event_box_set_visible_window (GTK_EVENT_BOX (tile), FALSE);
+  gtk_event_box_set_above_child (GTK_EVENT_BOX (tile), FALSE);
   
-  alignment = gtk_alignment_new (0.0f, 0.0f, 1.0f, 1.0f);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 15, 15, 15, 15);
-  gtk_container_add (GTK_CONTAINER (tile), alignment);
+  tile->priv->alignment = gtk_alignment_new (0.0f, 0.0f, 1.0f, 1.0f);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (tile->priv->alignment), 15, 15, 15, 15);
+  gtk_container_add (GTK_CONTAINER (tile), tile->priv->alignment);
   
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 10);
-  gtk_container_add (GTK_CONTAINER (alignment), hbox);
+  gtk_container_add (GTK_CONTAINER (tile->priv->alignment), hbox);
 
   tile->priv->picture = gtk_image_new ();
   gtk_misc_set_alignment (GTK_MISC (tile->priv->picture), 0.0f, 0.0f);
@@ -80,6 +85,47 @@ twitux_viewer_tile_init(TwituxViewerTile *tile)
   gtk_label_set_track_visited_links (GTK_LABEL (tile->priv->content), FALSE);
   gtk_misc_set_alignment (GTK_MISC (tile->priv->content), 0.0f, 0.0f);
   gtk_box_pack_start (GTK_BOX (vbox), tile->priv->content, FALSE, FALSE, 0);
+
+  g_signal_connect (G_OBJECT (tile), "draw",
+    G_CALLBACK (twitux_viewer_tile_on_draw_cb), tile);
+}
+
+gboolean
+twitux_viewer_tile_on_draw_cb (GtkWidget    *widget,
+                               cairo_t      *cr,
+                               gpointer      user_data)
+{
+  TwituxViewerTile *tile = TWITUX_VIEWER_TILE (user_data);
+  GtkStyleContext *context;
+  GdkRGBA color;
+
+  gdouble x             = 0,
+          y             = 0,
+          width         = gtk_widget_get_allocated_width(widget),
+          height        = gtk_widget_get_allocated_height(widget),
+          aspect        = 1.0,
+          corner_radius = height / 10.0;
+
+  gdouble radius = corner_radius / aspect;
+  gdouble degrees = M_PI / 180.0;
+
+  context = gtk_widget_get_style_context (widget);
+  gtk_style_context_get_border_color (context, GTK_STATE_FLAG_NORMAL, &color);
+
+  cairo_new_sub_path (cr);
+  cairo_arc (cr, x + width - radius, y + radius, radius, -90 * degrees, 0 * degrees);
+  cairo_arc (cr, x + width - radius, y + height - radius, radius, 0 * degrees, 90 * degrees);
+  cairo_arc (cr, x + radius, y + height - radius, radius, 90 * degrees, 180 * degrees);
+  cairo_arc (cr, x + radius, y + radius, radius, 180 * degrees, 270 * degrees);
+  cairo_close_path (cr);
+
+  cairo_set_source_rgba (cr, color.red, color.green, color.blue, color.alpha);
+  cairo_set_line_width (cr, 10.0);
+  cairo_stroke (cr);
+
+  gtk_container_propagate_draw (GTK_CONTAINER (tile), tile->priv->alignment, cr);
+
+  return TRUE;
 }
 
 GtkWidget*
@@ -112,3 +158,4 @@ twitux_viewer_tile_set_image (TwituxViewerTile *tile,
 {
   gtk_image_set_from_file (GTK_IMAGE (tile->priv->picture), filename);
 }
+

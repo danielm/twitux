@@ -122,23 +122,31 @@ twitux_app_init_app_menu (GApplication *application)
 {
   GtkBuilder *builder;
   GError *error = NULL;
+  gchar *menu_file;
 
   g_action_map_add_action_entries (G_ACTION_MAP (application),
                                    twitux_app_action_entries, G_N_ELEMENTS (twitux_app_action_entries),
                                    application);
 
   builder = gtk_builder_new ();
-  gtk_builder_add_from_file (builder, TWITUX_DATADIR "/twitux-app-menu.xml", &error);
+  
+  menu_file = twitux_utils_lookup_file ("twitux-app-menu.xml");
+  gtk_builder_add_from_file (builder, menu_file, &error);
 
   if (error == NULL) {
     gtk_application_set_app_menu (GTK_APPLICATION (application),
                                   G_MENU_MODEL (gtk_builder_get_object (builder,
                                   "app-menu")));
+
+    gtk_application_set_menubar (GTK_APPLICATION (application),
+                                 G_MENU_MODEL (gtk_builder_get_object (builder,
+                                 "app-menubar")));
   } else {
-    g_critical ("Unable to add the application menu: %s\n", error->message);
+    g_critical ("Unable to setup the application menu: %s\n", error->message);
     g_error_free (error);
   }
   
+  g_free (menu_file);
   g_object_unref (builder);
 }
 
@@ -149,7 +157,7 @@ twitux_app_action_about (GSimpleAction *action,
 {
   TwituxApp *application = TWITUX_APP (user_data);
 
-  twitux_utils_show_about (GTK_WINDOW (application->priv->main_window));
+  twitux_utils_show_about (GTK_WIDGET (application->priv->main_window));
 }
 
 static void

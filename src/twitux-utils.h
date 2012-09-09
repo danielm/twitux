@@ -25,6 +25,7 @@
 G_BEGIN_DECLS
 
 void twitux_utils_show_about (GtkWidget *parent);
+gchar *twitux_utils_lookup_file (const gchar *filename);
 
 G_END_DECLS
 
