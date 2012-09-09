@@ -18,10 +18,14 @@
  */
 
 #include "twitux-window.h"
+#include "twitux-viewer.h"
+#include "twitux-viewer-tile.h"
 
 struct _TwituxWindowPrivate
 {
   /* Widgets here */
+  GtkWidget *scrollbar;
+  GtkWidget *viewer;
 };
 
 static void twitux_window_constructed (GObject *object);
@@ -49,13 +53,47 @@ static void
 twitux_window_constructed (GObject *object)
 {
   TwituxWindowPrivate *private;
+  GtkWidget *tile;
+  gint i = 0;
 
   if (G_OBJECT_CLASS (twitux_window_parent_class)->constructed != NULL)
     G_OBJECT_CLASS (twitux_window_parent_class)->constructed (object);
 
   private = TWITUX_WINDOW (object)->priv;
   
-  /* TODO: Setup main window here */
+  gtk_window_set_default_size (GTK_WINDOW (object), 380, 455);
+  g_signal_connect (object, "delete-event",
+    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+
+  private->viewer = twitux_viewer_new ();
+  
+  private->scrollbar = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (private->scrollbar),
+    GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+
+  gtk_scrolled_window_add_with_viewport (
+    GTK_SCROLLED_WINDOW (private->scrollbar), GTK_WIDGET (private->viewer));
+
+  gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (private->scrollbar));
+
+  /* Just testing data */
+  for (i = 0; i <20; i++)
+  {
+    tile = twitux_viewer_tile_new ();
+
+    twitux_viewer_tile_set_title (TWITUX_VIEWER_TILE (tile),
+      "<b>Daniel Morales</b> <span color='#c0c0c0'>(10 minutes ago)</span>");
+
+    twitux_viewer_tile_set_image (TWITUX_VIEWER_TILE (tile),
+      TWITUX_DATADIR "/twitux-anonymous.png");
+
+    twitux_viewer_tile_set_content (TWITUX_VIEWER_TILE (tile),
+      "Yep, yep..... Twitux has a new release: 0.70, for the good old times. Learn more: <a href='#'>http://is.gd/nf7dn</a>");
+
+    gtk_box_pack_start(GTK_BOX (private->viewer), GTK_WIDGET (tile), FALSE, FALSE, 10);
+
+    gtk_widget_show_all (tile);
+  }
 }
 
 GtkWidget*

@@ -5,7 +5,9 @@ desktop_in_files = twitux.desktop.in
 @INTLTOOL_DESKTOP_RULE@
 
 uidir = $(pkgdatadir)
-ui_DATA = twitux-app-menu.xml
+ui_DATA =				\
+  twitux-app-menu.xml	\
+  twitux-anonymous.png
 
 EXTRA_DIST= 			\
   twitux.desktop		\

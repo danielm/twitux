@@ -20,6 +20,7 @@
 #include "config.h"
 #include "twitux-app.h"
 #include "twitux-window.h"
+#include "twitux-utils.h"
 
 #include <glib/gi18n.h>
 
@@ -38,23 +39,23 @@ static void twitux_app_class_init    (TwituxAppClass *klass);
 
 static void twitux_app_init_app_menu (GApplication *application);
 
-static void action_about (GSimpleAction *action,
-                          GVariant      *parameter,
-                          gpointer       user_data);
-static void action_help  (GSimpleAction *action,
-                          GVariant      *parameter,
-                          gpointer       user_data);
-static void action_quit  (GSimpleAction *action,
-                          GVariant      *parameter,
-                          gpointer       user_data);
+static void twitux_app_action_about  (GSimpleAction *action,
+                                      GVariant      *parameter,
+                                      gpointer       user_data);
+static void twitux_app_action_help   (GSimpleAction *action,
+                                      GVariant      *parameter,
+                                      gpointer       user_data);
+static void twitux_app_action_quit   (GSimpleAction *action,
+                                      GVariant      *parameter,
+                                      gpointer       user_data);
            
 
 G_DEFINE_TYPE (TwituxApp, twitux_app, GTK_TYPE_APPLICATION);
 
-static GActionEntry app_entries[] = {
-  { "about", action_about, NULL, NULL, NULL },
-  { "help", action_help, NULL, NULL, NULL },
-  { "quit", action_quit, NULL, NULL, NULL },
+static GActionEntry twitux_app_action_entries[] = {
+  { "about", twitux_app_action_about, NULL, NULL, NULL },
+  { "help", twitux_app_action_help, NULL, NULL, NULL },
+  { "quit", twitux_app_action_quit, NULL, NULL, NULL },
 };
 
 static void
@@ -123,7 +124,7 @@ twitux_app_init_app_menu (GApplication *application)
   GError *error = NULL;
 
   g_action_map_add_action_entries (G_ACTION_MAP (application),
-                                   app_entries, G_N_ELEMENTS (app_entries),
+                                   twitux_app_action_entries, G_N_ELEMENTS (twitux_app_action_entries),
                                    application);
 
   builder = gtk_builder_new ();
@@ -142,35 +143,19 @@ twitux_app_init_app_menu (GApplication *application)
 }
 
 static void
-action_about (GSimpleAction *action,
-              GVariant      *parameter,
-              gpointer       user_data)
+twitux_app_action_about (GSimpleAction *action,
+                         GVariant      *parameter,
+                         gpointer       user_data)
 {
   TwituxApp *application = TWITUX_APP (user_data);
 
-  const gchar *authors[] = {
-    "Daniel Morales <daniminas@gmail.com>",
-    NULL
-  };
-
-  const gchar *translators = _("translator-credits");
-  const gchar *copyright = "2012 Daniel Morales";
-
-  gtk_show_about_dialog (GTK_WINDOW (application->priv->main_window),
-                         "program-name", "Twitux",
-                         "comments", _("Microblogging client for Gnome"),
-                         "version", VERSION,
-                         "license-type", GTK_LICENSE_GPL_2_0,
-                         "authors", authors,
-                         "copyright", copyright,
-                         "translator-credits", translators,
-                         NULL);
+  twitux_utils_show_about (GTK_WINDOW (application->priv->main_window));
 }
 
 static void
-action_help (GSimpleAction *action,
-             GVariant      *parameter,
-             gpointer       user_data)
+twitux_app_action_help (GSimpleAction *action,
+                        GVariant      *parameter,
+                        gpointer       user_data)
 {
   GApplication *application = G_APPLICATION (user_data);
 
@@ -179,9 +164,9 @@ action_help (GSimpleAction *action,
 
 
 static void
-action_quit (GSimpleAction *action,
-             GVariant      *parameter,
-             gpointer       user_data)
+twitux_app_action_quit (GSimpleAction *action,
+                        GVariant      *parameter,
+                        gpointer       user_data)
 {
   GApplication *application = G_APPLICATION (user_data);
 
