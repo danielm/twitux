@@ -1,5 +1,8 @@
 Next things to work on:
  - Network monitor 
  - Save main window geometry
- - Update-Status Widget
  - GtkStatusIcon (only when gnome shell isn't working). Maybe, just maybe.
+ - Debug system
+ - Handle compile warnings and such messages (-Wall, etc..)
+ - Maybe split up code in libtwitux and libtwitux-gtk. Because we're cool like that
+

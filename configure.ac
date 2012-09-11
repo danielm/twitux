@@ -46,6 +46,7 @@ LT_PREREQ([2.2])
 LT_INIT
 
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+GLIB_GSETTINGS
 
 #
 # Gnome macros
@@ -60,14 +61,17 @@ GNOME_MAINTAINER_MODE_DEFINES
 #
 PKG_CHECK_MODULES(TWITUX,
 [
+  dbus-glib-1
   glib-2.0 >= $GLIB_REQUIRED
   gio-2.0 >= $GLIB_REQUIRED
   gio-unix-2.0 >= $GLIB_REQUIRED
-  dbus-glib-1
+  gobject-2.0
+  gsettings-desktop-schemas
   gtk+-3.0 >= $GTK_REQUIRED
   rest-0.7 >= $REST_REQUIRED
   libnotify >= $LIBNOTIFY_REQUIRED
   libcanberra-gtk3 >= $LIBCANBERRA_GTK_REQUIRED
+  libsoup-2.4
 ])
 #libsecret-1 >= $LIBSECRET_REQUIRED
 AC_SUBST(TWITUX_CFLAGS)
