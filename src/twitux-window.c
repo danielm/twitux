@@ -21,12 +21,14 @@
 #include "twitux-window.h"
 #include "twitux-viewer.h"
 #include "twitux-viewer-tile.h"
+#include "twitux-entry.h"
 
 struct _TwituxWindowPrivate
 {
   /* Widgets here */
   GtkWidget *scrollbar;
   GtkWidget *viewer;
+  GtkWidget *entry;
 };
 
 static void twitux_window_constructed (GObject *object);
@@ -54,7 +56,8 @@ static void
 twitux_window_constructed (GObject *object)
 {
   TwituxWindowPrivate *private;
-  GtkWidget *tile;
+  GtkWidget *vbox, *align;
+
   gint i = 0;
 
   if (G_OBJECT_CLASS (twitux_window_parent_class)->constructed != NULL)
@@ -64,10 +67,14 @@ twitux_window_constructed (GObject *object)
   
   gtk_application_window_set_show_menubar (GTK_APPLICATION_WINDOW (object), TRUE);
   
-  gtk_window_set_default_size (GTK_WINDOW (object), 380, 455);
+  gtk_window_set_default_size (GTK_WINDOW (object), 380, 540);
   g_signal_connect (object, "delete-event",
     G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_container_add (GTK_CONTAINER (object), vbox);
+
+  /* Post list viewer */
   private->viewer = twitux_viewer_new ();
   
   private->scrollbar = gtk_scrolled_window_new (NULL, NULL);
@@ -76,15 +83,24 @@ twitux_window_constructed (GObject *object)
 
   gtk_scrolled_window_add_with_viewport (
     GTK_SCROLLED_WINDOW (private->scrollbar), GTK_WIDGET (private->viewer));
+  
+  gtk_box_pack_start (GTK_BOX (vbox), private->scrollbar, TRUE, TRUE, 0);
 
-  gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (private->scrollbar));
+  /* Update status widget */
+  private->entry = twitux_entry_new ();
+  
+  align = gtk_alignment_new (0.0f, 0.0f, 1.0f, 1.0f);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 10, 0, 10, 10);
+  gtk_container_add (GTK_CONTAINER (align), private->entry);
+  
+  gtk_box_pack_end (GTK_BOX (vbox), align, FALSE, TRUE, 0);
 
   /* Just testing data */
   for (i = 0; i <20; i++)
   {
     gchar *anonnymous = twitux_utils_lookup_file ("twitux-anonymous.png");
     
-    tile = twitux_viewer_tile_new ();
+    GtkWidget *tile = twitux_viewer_tile_new ();
 
     twitux_viewer_tile_set_title (TWITUX_VIEWER_TILE (tile),
       "<b>Twitux</b> <span color='#c0c0c0'>(10 minutes ago)</span>");
