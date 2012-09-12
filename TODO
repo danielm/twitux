@@ -5,4 +5,4 @@ Next things to work on:
  - Debug system
  - Handle compile warnings and such messages (-Wall, etc..)
  - Maybe split up code in libtwitux and libtwitux-gtk. Because we're cool like that
-
+ - Check distclean files and distfiles
