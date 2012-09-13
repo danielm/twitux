@@ -16,6 +16,7 @@ bin_PROGRAMS = twitux
 
 twitux_SOURCES =									\
 	main.c											\
+	twitux-settings.h								\
 	twitux-app.c			twitux-app.h			\
 	twitux-utils.c			twitux-utils.h			\
 	twitux-window.c			twitux-window.h			\
