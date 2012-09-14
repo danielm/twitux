@@ -22,6 +22,10 @@
 #include "twitux-viewer.h"
 #include "twitux-viewer-tile.h"
 #include "twitux-entry.h"
+#include "twitux-geometry.h"
+
+#include <gtk/gtk.h>
+#include <gio/gio.h>
 
 struct _TwituxWindowPrivate
 {
@@ -34,6 +38,7 @@ struct _TwituxWindowPrivate
 static void twitux_window_constructed (GObject *object);
 static void twitux_window_class_init  (TwituxWindowClass *klass);
 static void twitux_window_init        (TwituxWindow *self);
+static void twitux_window_finalize    (GObject *object);
 
 G_DEFINE_TYPE(TwituxWindow, twitux_window, GTK_TYPE_APPLICATION_WINDOW)
 
@@ -41,11 +46,23 @@ static void
 twitux_window_class_init(TwituxWindowClass *klass)
 {
   G_OBJECT_CLASS (klass)->constructed = twitux_window_constructed;
+  G_OBJECT_CLASS (klass)->finalize = twitux_window_finalize;
 
   g_type_class_add_private((gpointer)klass, sizeof(TwituxWindowPrivate));
 }
 
-static void twitux_window_init(TwituxWindow *window)
+static void
+twitux_window_finalize (GObject *object)
+{
+  TwituxWindow *self = TWITUX_WINDOW (object);
+  
+  twitux_geometry_unpersist (GTK_WINDOW (object));
+  
+  G_OBJECT_CLASS (twitux_window_parent_class)->finalize (object);
+}
+
+static void
+twitux_window_init(TwituxWindow *window)
 {
   window->priv = G_TYPE_INSTANCE_GET_PRIVATE(window,
                                              TWITUX_TYPE_WINDOW,
@@ -71,6 +88,10 @@ twitux_window_constructed (GObject *object)
   g_signal_connect (object, "delete-event",
     G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 
+  /* Persist main Window apperance */
+  twitux_geometry_persist (GTK_WINDOW (object));
+
+  /* Main container */
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (object), vbox);
 

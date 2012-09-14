@@ -23,7 +23,8 @@ twitux_SOURCES =									\
 	twitux-viewer.c			twitux-viewer.h			\
 	twitux-viewer-tile.c	twitux-viewer-tile.h	\
 	twitux-entry.c			twitux-entry.h			\
-	twitux-entry-input.c	twitux-entry-input.h
+	twitux-entry-input.c	twitux-entry-input.h	\
+	twitux-geometry.c		twitux-geometry.h
 
 twitux_LDADD =										\
 	$(TWITUX_LIBS)
