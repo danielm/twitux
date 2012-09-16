@@ -31,12 +31,11 @@ static gboolean geometry_window_state_event_cb (GtkWindow *window,
   GdkEventWindowState *event,
   gpointer user_data);
 
-static gboolean geometry_window_state_event_cb (GtkWindow *window,
-  GdkEventWindowState *event,
-  gpointer user_data);
-
 static gboolean geometry_configure_event_cb (GtkWindow *window,
   GdkEventConfigure *event,
+  gpointer user_data);
+
+static void geometry_map_cb (GtkWindow *window,
   gpointer user_data);
 
 static gboolean geometry_store_cb (gpointer user_data);
@@ -44,9 +43,10 @@ static void geometry_save (GtkWindow *window);
 static void geometry_load (GtkWindow *window);
 
 void
-twitux_geometry_persist (GtkWidget *window,
-                         GSettings *gsettings_ui)
+twitux_geometry_persist (GtkWindow *window)
 {
+  GSettings *gsettings_ui = g_settings_new (TWITUX_SCHEMA_UI);
+
   g_object_set_data_full (G_OBJECT (window), GEOMETRY_DATA_NAME,
     g_object_ref (gsettings_ui), (GDestroyNotify) g_object_unref);
 
@@ -135,7 +135,7 @@ geometry_store_cb (gpointer user_data)
   maximized = (window_state & GDK_WINDOW_STATE_MAXIMIZED) != 0;
 
   /* Save values */
-  ui_settings = g_object_get_data (G_OBJECT (window), GEOMETRY_DATA_NAME);
+  ui_settings = g_object_get_data (G_OBJECT (user_data), GEOMETRY_DATA_NAME);
   g_settings_set_int (ui_settings, TWITUX_UI_WINDOW_X_POS, x);
   g_settings_set_int (ui_settings, TWITUX_UI_WINDOW_Y_POS, y);
   g_settings_set_int (ui_settings, TWITUX_UI_WINDOW_WIDTH, w);

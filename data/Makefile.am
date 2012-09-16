@@ -6,13 +6,6 @@ desktop_in_files = twitux.desktop.in
 gsettings_SCHEMAS = org.gnome.Twitux.gschema.xml
 @GSETTINGS_RULES@
 
-# We need to compile schemas at make time
-# to run from source tree
-gschemas.compiled: $(gsettings_SCHEMAS:.xml=.valid)
-	$(AM_V_GEN) $(GLIB_COMPILE_SCHEMAS) --targetdir=. .
-
-all-local: gschemas.compiled
-
 uidir = $(pkgdatadir)
 ui_DATA =				\
   twitux-app-menu.xml	\
@@ -24,5 +17,4 @@ EXTRA_DIST= 			\
   $(gsettings_SCHEMAS)
 
 CLEANFILES = 			\
-  $(desktop_DATA)		\
-  gschemas.compiled
+  $(desktop_DATA)

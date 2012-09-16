@@ -25,7 +25,7 @@
 
 G_BEGIN_DECLS
 
-void twitux_geometry_persist (GtkWidget *window);
+void twitux_geometry_persist (GtkWindow *window);
 void twitux_geometry_unpersist (GtkWindow *window);
 
 G_END_DECLS

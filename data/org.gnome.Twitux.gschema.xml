@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="org.gnome.Twtiux" path="/org/gnome/twitux/">
-    <child name="ui" schema="org.gnome.Twtiux.ui"/>
+  <schema path="/org/gnome/twitux/" id="org.gnome.Twitux">
+    <child schema="org.gnome.Twitux.ui" name="ui"/>
   </schema>
-  <schema id="org.gnome.Twtiux.ui" path="/org/gnome/twitux/ui/">
+  <schema path="/org/gnome/twitux/ui/" id="org.gnome.Twitux.ui">
     <key name="window-maximised" type="b">
       <default>false</default>
       <summary>Show main window as maximised</summary>
